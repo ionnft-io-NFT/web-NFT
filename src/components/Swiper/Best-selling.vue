@@ -1,4 +1,4 @@
- <template>
+<template>
   <div style="position: relative">
     <swiper
       ref="bestSelling"

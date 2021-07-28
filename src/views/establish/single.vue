@@ -51,7 +51,7 @@
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>{{ $t("Single.xuanze") }}</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
 
@@ -167,8 +167,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -184,8 +184,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -201,8 +201,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -233,9 +233,9 @@ export default {
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 32 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 32 个字符",
             trigger: "blur",
           },
         ],
@@ -369,7 +369,7 @@ export default {
     // 白名单
     async whiteList(cont) {
       const res = await contracts.isWhitelist(cont, this.$address);
-      console.log('whiteList', cont.address, this.$address, res);
+      console.log("whiteList", cont.address, this.$address, res);
       if (res == false) {
         this.$message({
           message: "不在白名单，无法创建NFT",
