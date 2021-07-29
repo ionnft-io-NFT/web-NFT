@@ -644,6 +644,7 @@ export default {
         // console.log(tx);
       } catch (err) {
         this.buyLoading = false;
+        this.loading = false;
         // console.log("exchange.err=>", err);
         if (err.data.code !== 3) {
           this.$message({
