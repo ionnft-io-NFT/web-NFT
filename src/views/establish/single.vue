@@ -153,6 +153,7 @@
     <el-dialog
       :title="$t('Single.Create')"
       :visible.sync="dialogVisible"
+      v-loading="loading_ing"
       center
     >
       <div class="Approve">
@@ -229,6 +230,7 @@ export default {
   props: {},
   data() {
     return {
+      loading_ing: false,
       rules: {
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
@@ -382,6 +384,7 @@ export default {
     // 上传图片
     uploadFile() {
       this.upLoading = true;
+      this.loading_ing = true;
       this.$refs.upload.submit();
     },
     // 上传成功
@@ -420,10 +423,12 @@ export default {
       const addResp = await contracts.addItem(mintResp.hash, 4);
       console.log("addResp=>", addResp);
       this.upLoading = false;
+      this.loading_ing = false;
       this.changes = 2;
     },
     // 创建订单
     async createOrder() {
+      this.loading_ing = true;
       this.ordLoading = true;
       const order = {
         key: {
@@ -466,6 +471,7 @@ export default {
       this.ordLoading = false;
       this.changes = 3;
       // alert("创建完成");
+      this.loading_ing = false;
       this.$message({
         message: "创建完成",
         type: "success",
