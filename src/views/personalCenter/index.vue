@@ -105,9 +105,9 @@
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
-                  {{ item.price }} BNB
+                  {{ item.price }} {{ item.coin_name }}
                 </span>
-                <span> 1/1</span>
+                <span> {{ item.supply_sell }}/{{ item.supply }}</span>
                 <div
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
@@ -159,17 +159,18 @@
                 "
                 :class="{ hoverBg: index == hoverIndex }"
                 alt=""
-                @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
+                @error="setDefaultImage"
                 @mouseout="hoverIndex = -1"
               />
+
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
-                  {{ item.price }} BNB
+                  {{ item.price }} {{ item.coin_name }}
                 </span>
-                <span> 1/1</span>
+                <span> {{ item.supply_sell }}/{{ item.supply }}</span>
                 <div
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
@@ -225,17 +226,18 @@
                 "
                 :class="{ hoverBg: index == hoverIndex }"
                 alt=""
-                @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
+                @error="setDefaultImage"
                 @mouseout="hoverIndex = -1"
               />
+
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
-                  {{ item.price }} BNB
+                  {{ item.price }} {{ item.coin_name }}
                 </span>
-                <span> 1/1</span>
+                <span> {{ item.supply_sell }}/{{ item.supply }}</span>
                 <div
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
