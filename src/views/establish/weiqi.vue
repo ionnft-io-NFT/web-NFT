@@ -171,6 +171,7 @@
     <el-dialog
       :title="$t('Single.Create')"
       :visible.sync="dialogVisible"
+      v-loading="loading_ing"
       center
     >
       <div class="Approve">
@@ -248,6 +249,7 @@ export default {
   data() {
     return {
       rules: {
+        loading_ing: false,
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
           {
@@ -461,6 +463,7 @@ export default {
     // 上传图片
     uploadFile() {
       this.upLoading = true;
+      this.loading_ing = true;
       this.$refs.upload.submit();
     },
 
@@ -489,7 +492,7 @@ export default {
       this.formLabelAlign.tokenid = tokenResp.data.tokenid;
 
       const sgfitem = await contracts.Sgfitem(
-        0x4769e82BaC4e7550D9311956fFb945f9eAB66E65,
+        0x4769e82bac4e7550d9311956ffb945f9eab66e65,
         this.formLabelAlign.tokenid,
         this.formLabelAlign.meta_name,
         this.formLabelAlign.meta_filed1,
@@ -511,11 +514,13 @@ export default {
       const addResp = await contracts.addItem(mintResp.hash, 4);
       console.log("addResp=>", addResp);
       this.upLoading = false;
+      this.loading_ing = false;
       this.changes = 2;
     },
 
     // 创建订单
     async createOrder() {
+      this.loading_ing = true;
       this.ordLoading = true;
       const order = {
         key: {
@@ -558,6 +563,7 @@ export default {
       this.ordLoading = false;
       this.changes = 3;
       // alert("创建完成");
+      this.loading_ing = false;
       this.$message({
         message: "创建完成",
         type: "success",
