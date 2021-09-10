@@ -459,9 +459,12 @@ export default {
 
       const createOrder = contracts.sequence(order);
 
+      // todo
       const createOrderResp = await contracts.createOrderV1(
         createOrder,
-        signResp
+        signResp,
+        1,
+        1
       );
       console.log("createOrderResp=>", createOrderResp);
       this.ordLoading = false;
