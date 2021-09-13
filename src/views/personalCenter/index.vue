@@ -21,6 +21,7 @@
     <div class="personalCenter-pic">
       <img :src="userpic" alt="" />
     </div>
+
     <!-- 个人简介 -->
     <div class="personalCenter-id">
       <p class="personalCenter-p">
@@ -73,6 +74,7 @@
         >verify now <i class="el-icon-arrow-right"></i>
       </span>
     </div>
+
     <!-- 产品系列 -->
     <div class="personalCenter-Tabs">
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -92,12 +94,20 @@
               @mouseleave="hover = false"
             >
               <img
+                v-if="svgShow"
                 :src="$Cover(item.prop_image)"
                 :class="{ hoverBg: index == hoverIndex }"
                 alt=""
                 @mouseover="hoverIndex = index"
                 @error="setDefaultImage"
                 @mouseout="hoverIndex = -1"
+              />
+              <embed
+                v-else
+                :class="{ hoverBg: index == hoverIndex }"
+                @mouseover="hoverIndex = index"
+                @mouseout="hoverIndex = -1"
+                :src="$Cover(item.prop_image)"
               />
 
               <h3 class="username">{{ item.prop_name }}</h3>
@@ -269,6 +279,7 @@ export default {
   props: {},
   data() {
     return {
+      svgShow: true,
       user_id: "",
       userBgc: require("../../assets/bj.png"),
       userpic: require("../../assets/touxiang.png"),
@@ -437,6 +448,9 @@ export default {
       // console.log(resp);
       this.createdList = resp.list;
       this.createdList.forEach((item, index) => {
+        if (item.token == "0x602D148528DE232a322267207CC989e3Bb51cf51") {
+          this.svgShow = false;
+        }
         if (this.createdList[index].price === "") {
           this.createdList[index].price = "暂无价格";
         } else {
@@ -553,6 +567,12 @@ export default {
   height: 389px;
   background: #ffffff;
 }
+.exhibition embed {
+  width: 372px;
+  height: 389px;
+  background: #ffffff;
+}
+
 .exhibition li:nth-child(3n + 0) {
   margin-right: 0px;
 }

@@ -2,12 +2,15 @@
   <div id="detailsid" v-loading="loading" class="details">
     <!-- 商品大图zs -->
     <img
+      v-if="svgShow"
       id="imgShows"
       :src="details.prop_image"
       style="border-radius: 20px"
       alt=""
       @error="setDefaultImage"
     />
+
+    <embed v-else style="border-radius: 20px" :src="details.prop_image" />
     <div id="clearid" class="clear" />
     <!-- 产品详情 -->
     <ul class="details-a">
@@ -385,6 +388,7 @@ export default {
   props: {},
   data() {
     return {
+      svgShow: true,
       creator_pic: "",
       own_user_pic: "",
       loading: true,
@@ -574,9 +578,13 @@ export default {
         `/v1/item/info?token=${this.token}&token_id=${this.token_id}`
       );
       // eslint-disable-next-line no-empty
-      // console.log(resp);
       if (resp.code !== 200) {
       } else {
+        if (resp.data.token == "0x602D148528DE232a322267207CC989e3Bb51cf51") {
+          this.svgShow = false;
+        }
+        console.log(resp.data.token, "123");
+
         this.loading = false;
       }
       this.details = resp.data;
@@ -1104,6 +1112,15 @@ export default {
   margin-top: 60px;
 }
 .details img {
+  float: left;
+  width: 612px;
+  height: 782px;
+  background: #ffffff;
+  // box-shadow: 0px 0px 8px 1px rgba(140, 140, 140, 0.26);
+  border-radius: 36px;
+}
+
+.details embed {
   float: left;
   width: 612px;
   height: 782px;

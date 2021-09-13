@@ -37,7 +37,7 @@
               :key="index"
               @mousedown="mouseEnter1(item)"
             >
-              <img
+              <embed
                 :src="$Cover(item.prop_image)"
                 oncontextmenu="return false;"
                 ondragstart="return false;"
@@ -59,8 +59,8 @@
             @mousedown="mouseEnter2(item)"
           >
             <div v-show="item.prop_image" class="item-img">
-              <img
-                :src="item.prop_image"
+              <embed
+                :src="$Cover(item.prop_image)"
                 oncontextmenu="return false;"
                 ondragstart="return false;"
               />
@@ -73,7 +73,7 @@
               <i class="el-icon-view"></i> Preview
             </div>
             <div class="right_c_c" @mouseup.stop="stopUp">
-              <i class="el-icon-delete"></i>(1)
+              <i class="el-icon-delete"></i>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
         <div class="right-wrap" id="mycanvas" ref="mycanvas">
           <div class="item" v-for="(item, index) in rightList" :key="index">
             <div v-show="item.prop_image" class="item-img">
-              <img
+              <embed
                 :src="item.prop_image"
                 oncontextmenu="return false;"
                 ondragstart="return false;"
@@ -114,7 +114,7 @@
       v-if="mouseImg"
       :style="{ left: mousePoint.x, top: mousePoint.y }"
     >
-      <img
+      <embed
         :src="$Cover(mouseImg.prop_image)"
         oncontextmenu="return false;"
         ondragstart="return false;"
@@ -160,7 +160,7 @@ export default {
     window.addEventListener("mousemove", this.updateMouse);
     const data = await $http.get(`v1/explore/ds_list`);
     this.classifyList = data.data;
-    const resp = await $http.get(`v1/explore/list?page=1&dsid=2`);
+    const resp = await $http.get(`v1/explore/list?page=1&dsid=1&size=100`);
     this.leftList = resp.list;
     this.forFn();
   },
@@ -244,7 +244,7 @@ export default {
     //切换分类
     async classifyFn(item) {
       const resp = await $http.get(
-        `v1/explore/list?page=1&dsid=${item.ds_cate_id}`
+        `v1/explore/list?page=1&dsid=${item.ds_cate_id}&size=100`
       );
       this.leftList = resp.list;
     },
@@ -359,7 +359,6 @@ export default {
       width: 540px;
       height: 770px;
       display: flex;
-      flex-wrap: wrap;
       h3 {
         font-size: 16px;
         font-family: PingFangSC-Medium, PingFang SC;
@@ -400,6 +399,8 @@ export default {
         .left_b_list {
           display: flex;
           flex-wrap: wrap;
+          height: 100%;
+          overflow: hidden;
         }
       }
       .item {
@@ -411,7 +412,7 @@ export default {
         margin: 10px;
         cursor: pointer;
         z-index: 99;
-        img {
+        embed {
           width: 40px;
           height: 40px;
         }
@@ -489,7 +490,7 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            img {
+            embed {
               width: 40px;
               height: 40px;
             }
@@ -504,7 +505,7 @@ export default {
     top: 100px;
     left: 200px;
     z-index: 99;
-    img {
+    embed {
       width: 30px;
       height: 30px;
     }
@@ -532,7 +533,7 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
-          img {
+          embed {
             width: 40px;
             height: 40px;
           }

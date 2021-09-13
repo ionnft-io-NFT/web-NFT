@@ -1,11 +1,10 @@
-
 # 分支说明
 
-* master 主分支（本地开发或测试服代码 .net域名）
+- master 主分支（本地开发或测试服代码 .net 域名）
 
-* prod 生产分支（正式服代码 .io域名）
+- prod 生产分支（正式服代码 .io 域名）
 
-* mobile 手机版分支
+- mobile 手机版分支
 
 <p align="center">
   <a href="https://github.com/vuejs/vue">
@@ -31,24 +30,29 @@
 # vue-template
 
 ## Project setup
+
 ```
 yarn install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 yarn serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 yarn build
 ```
 
 ### Lints and fixes files
+
 ```
 yarn lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -3,6 +3,7 @@
     <h2 class="bazaar_headline">
       {{ $t("bazaar.title") }}
     </h2>
+
     <div class="classify">
       <el-button
         v-for="(item, index) in classifyList"
@@ -15,6 +16,7 @@
         {{ item.cate_name }}
       </el-button>
     </div>
+
     <ul v-loading="loading" class="exhibition">
       <li
         v-for="(item, index) in showList.slice(0, a)"
@@ -23,19 +25,28 @@
         @click="
           $router.push({
             name: 'details',
-            params: { id: item.token_id, token: item.token }
+            params: { id: item.token_id, token: item.token },
           })
         "
         @mouseover="hover = true"
         @mouseleave="hover = false"
       >
         <img
+          v-if="svgShow"
           :src="$Cover(item.prop_image)"
           :class="{ hoverBg: index == hoverIndex }"
           alt=""
           @error="setDefaultImage"
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
+        />
+
+        <embed
+          v-else
+          :class="{ hoverBg: index == hoverIndex }"
+          @mouseover="hoverIndex = index"
+          @mouseout="hoverIndex = -1"
+          :src="$Cover(item.prop_image)"
         />
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.prop_desc }}</p>
@@ -48,6 +59,7 @@
             <img src="../../assets/souchang.png" alt="" /> 2314
           </div>
         </div>
+
         <div
           :class="hoverIndex == index ? 'redirects' : 'redirect'"
           @mouseover="hoverIndex = index"
@@ -56,6 +68,7 @@
           Buy now →
         </div>
       </li>
+
       <div
         v-if="a < showList.length"
         :class="showList == 0 ? 'loadMores' : 'loadMore'"
@@ -63,6 +76,7 @@
       >
         {{ $t("bazaar.jiazai") }}
       </div>
+
       <div v-else :class="showList == 0 ? 'loadMores' : 'loadMore'">
         {{ $t("bazaar.meiyou") }}
       </div>
@@ -80,13 +94,14 @@ export default {
   props: {},
   data() {
     return {
+      svgShow: true,
       hover: false,
       hoverIndex: -2,
       a: 6,
       b: 5,
       showList: [],
       loading: true,
-      classifyList: []
+      classifyList: [],
     };
   },
   created() {},
@@ -100,13 +115,19 @@ export default {
       if (data.list.length == 0) {
         this.$message({
           message: "分类商品为空",
-          type: "warning"
+          type: "warning",
         });
         this.getList();
       } else {
         this.showList = [];
         this.showList = data.list;
         this.showList.forEach((item, index) => {
+          if (item.token == "0x602D148528DE232a322267207CC989e3Bb51cf51") {
+            console.log(item);
+            this.svgShow = false;
+          } else {
+            this.svgShow = true;
+          }
           if (this.showList[index].price === "") {
             this.showList[index].price = "暂无价格";
           } else {
@@ -130,6 +151,10 @@ export default {
       const resp = await $http.get("/v1/explore/list?page=1&size=100");
       this.showList = resp.list;
       this.showList.forEach((item, index) => {
+        if (item.token == "0x602D148528DE232a322267207CC989e3Bb51cf51") {
+          console.log(item);
+          this.svgShow = false;
+        }
         if (this.showList[index].price === "") {
           this.showList[index].price = "暂无价格";
         } else {
@@ -144,12 +169,20 @@ export default {
     async getClassify() {
       const data = await $http.get("/v1/category/list");
       this.classifyList = data.list;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
+.img-hover:hover {
+  .hoverBg {
+    filter: blur(8px);
+  }
+  .redirects {
+    display: block;
+  }
+}
 #classifyid {
   margin-right: 20px;
   color: #000;
@@ -168,6 +201,7 @@ export default {
 .hoverBg {
   filter: blur(8px);
 }
+
 .redirect {
   display: none;
 }
@@ -259,6 +293,11 @@ export default {
   height: 520px;
   box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
   border-radius: 20px;
+}
+.exhibition embed {
+  width: 372px;
+  height: 389px;
+  background: #ffffff;
 }
 .exhibition img {
   width: 372px;
