@@ -36,11 +36,13 @@
               v-for="(item, index) in leftList"
               :key="index"
               @mousedown="mouseEnter1(item)"
+              oncontextmenu="return false;"
+              ondragstart="return false;"
             >
               <embed
-                :src="$Cover(item.prop_image)"
                 oncontextmenu="return false;"
                 ondragstart="return false;"
+                :src="$Cover(item.prop_image)"
               />
             </div>
           </div>
@@ -158,14 +160,19 @@ export default {
   async mounted() {
     // 实时监听鼠标位置
     window.addEventListener("mousemove", this.updateMouse);
-    const data = await $http.get(`v1/explore/ds_list`);
-    this.classifyList = data.data;
-    const resp = await $http.get(`v1/explore/list?page=1&dsid=1&size=100`);
-    this.leftList = resp.list;
+
     this.forFn();
+    this.getDishuFn();
   },
 
   methods: {
+    async getDishuFn() {
+      const data = await $http.get(`v1/explore/ds_list`);
+      this.classifyList = data.data;
+      const resp = await $http.get(`v1/explore/list?page=1&dsid=1&size=100`);
+      this.leftList = resp.list;
+    },
+
     countFn() {
       this.showcounts = [];
       this.rightList.forEach((item) => {
@@ -264,6 +271,7 @@ export default {
 
     //选择区鼠标按下
     mouseEnter1(item) {
+      console.log(item);
       this.selectedItem2 = {};
       this.selectedItem = item;
     },
