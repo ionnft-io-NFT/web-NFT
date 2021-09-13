@@ -373,6 +373,8 @@ import {
   wbnbAddr,
   Contracts721,
   Contracts1155,
+  Metawords721,
+  ContractExchangeDS,
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
 import contracts from "../../wallet/contracts";
@@ -444,7 +446,10 @@ export default {
       const erc20_balance = await Erc20Balance(account);
       console.log("wbnb_balance", this.$formatEther(erc20_balance.toString()));
       this.wbnb_balance = this.$formatEther(erc20_balance.toString());
-      const isApproved = await Erc20IsApproved(account, erc20TranProxyAddr);
+      let isApproved = await Erc20IsApproved(account, erc20TranProxyAddr);
+      if (this.token=='0x602D148528DE232a322267207CC989e3Bb51cf51') {
+        isApproved = true;
+      }
       console.log("isApproved", isApproved);
       this.isApproved = isApproved;
     }
@@ -460,7 +465,11 @@ export default {
           // buy approve
           if (this.details.asset_id == 4) {
             // 721
-            currCont = Contracts721();
+            if (this.token == '0x602D148528DE232a322267207CC989e3Bb51cf51') {
+              currCont = Metawords721();
+            } else {
+              currCont = Contracts721();
+            }
           } else if (this.details.asset_id == 3) {
             // 1155
             currCont = Contracts1155();
@@ -609,7 +618,10 @@ export default {
       if (resp.data.saleable == 1 && resp.data.price && resp.data.price > 0) {
         if (resp.data.asset_id == 4) {
           // 721
-          const cont721 = Contracts721();
+          let cont721 = Contracts721();
+          if (this.token == '0x602D148528DE232a322267207CC989e3Bb51cf51') {
+            cont721 = Metawords721();
+          }
           const res = await contracts.isApprovedAll(cont721, this.$address);
           console.log("721 buy-isApprovedAll", res);
           this.buyisApproved = res;
@@ -647,7 +659,11 @@ export default {
       const address = await initWallet();
       if (address != "") {
         addr = address;
-        currCont = ContractExchange();
+        if (this.token == "") {
+          currCont = ContractExchangeDS();
+        } else {
+          currCont = ContractExchange();
+        }
       }
       this.loading = true;
 
@@ -692,15 +708,24 @@ export default {
 
       let tx = null;
       try {
-        tx = await currCont.exchange(
-          order2,
-          { v: sign.v, r: sign.r, s: sign.s },
-          BigNumber.from(this.fee.buyFee),
-          { v: feeSign.v, r: feeSign.r, s: feeSign.s },
-          amount,
-          addr,
-          { value: paying }
-        );
+        if (this.token == "0x602D148528DE232a322267207CC989e3Bb51cf51") {
+          tx = await currCont.exchange(
+            order2,
+            { v: sign.v, r: sign.r, s: sign.s },
+            amount,
+            addr
+          );
+        } else {
+          tx = await currCont.exchange(
+            order2,
+            { v: sign.v, r: sign.r, s: sign.s },
+            BigNumber.from(this.fee.buyFee),
+            { v: feeSign.v, r: feeSign.r, s: feeSign.s },
+            amount,
+            addr,
+            { value: paying }
+          );
+        }
         console.log(tx);
       } catch (err) {
         this.buyLoading = false;

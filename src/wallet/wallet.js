@@ -3,6 +3,7 @@ import ERC721 from "./VVMERC721.json";
 import METAWORDS721 from "./LionNFTV1.json"; //引入地书合约
 import ERC1155 from "./VVMToken1155.json";
 import ExchangeV1 from "./ExchangeV1.json";
+import ExchangeV1DS from "./ExchangeV1DS.json";
 import ERC20 from "./ERC20.json";
 import ERC20Proxy from "./ERC20TransferProxy.json";
 import { ethers, BigNumber } from "ethers";
@@ -115,6 +116,17 @@ export function ContractExchange() {
   const cont = new ethers.Contract(
     ExchangeV1[address_name],
     ExchangeV1.abi,
+    provider.getSigner()
+  );
+  return cont;
+}
+
+// 实例化交易合约-地书
+export function ContractExchangeDS() {
+  const provider = getProvider();
+  const cont = new ethers.Contract(
+    ExchangeV1DS[address_name],
+    ExchangeV1DS.abi,
     provider.getSigner()
   );
   return cont;
